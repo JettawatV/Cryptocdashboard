@@ -65,8 +65,8 @@ If you're interested in collaborating on this project, please feel free to reach
 
 ## License
 
-This project is open source under the [TBD] license. You can use and modify the code as needed.
+This project is open source under the jettawatv license. You can use and modify the code as needed.
 
 ## Contact Information
 
-You can reach out to [Your Contact Information] for questions, collaboration, or more information about this project.
+You can reach out to Jettawatvd@gmail.com for questions, collaboration, or more information about this project.
