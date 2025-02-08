@@ -196,8 +196,8 @@ selected_timeframe = st.sidebar.selectbox(
 
 # Load Binance data
 crypto_symbol = crypto_options[selected_crypto]
-crypto_symbol_name = selected_crypto
 interval = timeframe_options[selected_timeframe]
+crypto_symbol_name = selected_crypto
 
 df = get_binance_data(crypto_symbol, interval)
 ticker = get_binance_ticker(crypto_symbol)
