@@ -198,41 +198,32 @@ crypto_symbol = crypto_options[selected_crypto]
 interval = timeframe_options[selected_timeframe]
 crypto_symbol_name = selected_crypto
 
-df = get_binance_data(crypto_symbol_name, interval)
-ticker = get_binance_ticker(crypto_symbol_name)
+df = get_binance_data(crypto_symbol, interval)
+ticker = get_binance_ticker(crypto_symbol)
 
 # Dashboard Title
 st.title("Crypto Real Time Analysis Dashboard")
 st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 # Fetch Binance data
-binance_data = get_binance_data2(crypto_symbol_name)
-market_data = get_ath_and_marketcap_from_coinmarketcap(crypto_symbol_name)
+binance_data = get_binance_data2(crypto_symbol)
+market_data = get_ath_and_marketcap_from_coinmarketcap(crypto_symbol)
 dominance = get_crypto_dominance(crypto_symbol_name)
-open_interest = get_open_interest(crypto_symbol_name)
+open_interest = get_open_interest(crypto_symbol)
 
 # Display Metrics
 st.subheader(f"{selected_crypto} Market Metrics")
 col1, col2, col3, col4 = st.columns(4)
+col5, col6, col7, col8 = st.columns(4)
 
 if binance_data:
     col1.metric("24H High", f"${float(binance_data['highPrice']):,.2f}")
     col2.metric("24H Low", f"${float(binance_data['lowPrice']):,.2f}")
     col3.metric("24H Volume (BTC)", f"{float(binance_data['volume']):,.2f} BTC")
     col4.metric("24H Volume (USD)", f"${float(binance_data['quoteVolume']):,.2f}")
-
-if market_data:
-    st.subheader(f"{selected_crypto} All-Time High and Market Cap")
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.metric("All-Time High (ATH)", f"${market_data['ath']:,.2f}")
-    
-    with col2:
-        st.metric("Market Cap", f"${market_data['market_cap']:,.2f}")
         
 if dominance:
-    st.metric(f"{selected_crypto} Dominance", f"{float(dominance):,.2f}%")
+    col5.metric(f"{selected_crypto} Dominance", f"{float(dominance):,.2f}%")
 
 if open_interest:
     st.metric("Open Interest", f"{open_interest:,.2f} BTC")
