@@ -18,7 +18,7 @@ COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets"
 BTC_DOMINANCE_URL = "https://api.coingecko.com/api/v3/global"
 FUTURES_URL = "https://fapi.binance.com/fapi/v1/openInterest"
 COINMARKETCAP_API_KEY = '356c49a6-c0e2-4ebc-8726-2767c3df46bf'
-COINMARKETCAP_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+COINMARKETCAP_URL = "https://api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 
 # Function to get Binance market data
 def get_binance_data(symbol, interval, limit=100):
@@ -176,7 +176,7 @@ btc_dominance = get_btc_dominance()
 open_interest = get_open_interest(crypto_symbol)
 
 # Display Metrics
-st.subheader(f"📊 {selected_crypto} Market Metrics")
+st.subheader(f"{selected_crypto} Market Metrics")
 col1, col2, col3, col4 = st.columns(4)
 
 if binance_data:
@@ -186,14 +186,14 @@ if binance_data:
     col4.metric("24H Volume (USD)", f"${float(binance_data['quoteVolume']):,.2f}")
 
 if market_data:
-    st.metric("🔝 All-Time High (ATH)", f"${market_data['ath']:,.2f}")
-    st.metric("💰 Market Cap", f"${market_data['market_cap']:,.2f}")
+    st.metric("All-Time High (ATH)", f"${market_data['ath']:,.2f}")
+    st.metric("Market Cap", f"${market_data['market_cap']:,.2f}")
 
 if btc_dominance:
-    st.metric("⚡ BTC Dominance", f"{btc_dominance:.2f}%")
+    st.metric("BTC Dominance", f"{btc_dominance:.2f}%")
 
 if open_interest:
-    st.metric("📉 Open Interest", f"{open_interest:,.2f} BTC")
+    st.metric("Open Interest", f"{open_interest:,.2f} BTC")
 # Display real-time market data
 if ticker:
     col1, col2, col3 = st.columns(3)
