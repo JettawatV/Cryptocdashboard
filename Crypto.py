@@ -124,7 +124,7 @@ def get_crypto_dominance(selected_crypto_name):
             data = response.json()['data']
             
             # Get the total market cap for all cryptocurrencies
-            total_market_cap = data['total_market_cap_usd']
+            total_market_cap = data['total_market_cap']
             
             # Fetch the market cap percentage of the selected coin from the global market data
             market_cap_percentages = data['market_cap_percentage']
