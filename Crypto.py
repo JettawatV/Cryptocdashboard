@@ -211,23 +211,13 @@ if binance_data:
     col4.metric("24H Volume (USD)", f"${float(binance_data['quoteVolume']):,.2f}")
         
 if dominance:
-    col5.metric(f"{selected_crypto} Dominance", f"{float(dominance):,.2f}%")
-
-if open_interest:
-    st.metric("Open Interest", f"{open_interest:,.2f} BTC")
+    col8.metric(f"{selected_crypto} Dominance", f"{float(dominance):,.2f}%")
 
 # Display real-time market data
 if ticker:
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.metric("Current Price", f"${ticker['price']:,.2f}")
-
-    with col2:
-        st.metric("24h Change", f"{ticker['change']}%", delta=ticker['change'])
-
-    with col3:
-        st.metric("24h Volume", f"${ticker['volume']:,.2f}")
+    col5.metric("Current Price", f"${ticker['price']:,.2f}")
+    col6.metric("24h Change", f"{ticker['change']}%", delta=ticker['change'])
+    col7.metric("24h Volume", f"${ticker['volume']:,.2f}")
 
 # Display historical data
 if df is not None and not df.empty:
