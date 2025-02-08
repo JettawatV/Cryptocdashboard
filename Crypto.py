@@ -17,7 +17,6 @@ BINANCE_URL = "https://api.binance.us/api/v3/ticker/24hr"
 COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets"
 BTC_DOMINANCE_URL = "https://api.coingecko.com/api/v3/global"
 FUTURES_URL = "https://fapi.binance.com/fapi/v1/openInterest"
-COINMARKETCAP_API_KEY = '356c49a6-c0e2-4ebc-8726-2767c3df46bf'
 COINMARKETCAP_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 
 # Function to get Binance market data
@@ -199,18 +198,18 @@ crypto_symbol = crypto_options[selected_crypto]
 interval = timeframe_options[selected_timeframe]
 crypto_symbol_name = selected_crypto
 
-df = get_binance_data(crypto_symbol, interval)
-ticker = get_binance_ticker(crypto_symbol)
+df = get_binance_data(crypto_symbol_name, interval)
+ticker = get_binance_ticker(crypto_symbol_name)
 
 # Dashboard Title
 st.title("Crypto Real Time Analysis Dashboard")
 st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 # Fetch Binance data
-binance_data = get_binance_data2(crypto_symbol)
+binance_data = get_binance_data2(crypto_symbol_name)
 market_data = get_ath_and_marketcap_from_coinmarketcap(crypto_symbol_name)
 dominance = get_crypto_dominance(crypto_symbol_name)
-open_interest = get_open_interest(crypto_symbol)
+open_interest = get_open_interest(crypto_symbol_name)
 
 # Display Metrics
 st.subheader(f"{selected_crypto} Market Metrics")
