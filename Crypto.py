@@ -200,12 +200,11 @@ st.sidebar.title("Settings")
 
 # Get available trading pairs
 exchange_info = binance.get_exchange_info()
-if exchange_info:
-    trading_pairs = [symbol['symbol'] for symbol in exchange_info['symbols'] 
-                    if symbol['symbol'].endswith('USDT')]
-    selected_pair = st.sidebar.selectbox("Select Trading Pair", trading_pairs, index=trading_pairs.index('BTCUSDT'))
+if exchange_info and 'symbols' in exchange_info:
+    trading_pairs = [symbol['symbol'] for symbol in exchange_info['symbols']]
 else:
-    selected_pair = "BTCUSDT"
+    st.error("Failed to fetch exchange info or missing 'symbols' key")
+    trading_pairs = []
 
 # Timeframe selection
 timeframe_options = {
