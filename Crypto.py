@@ -13,6 +13,7 @@ st.set_page_config(
 
 # Binance API Base URL
 BINANCE_BASE_URL = "https://api.binance.us"
+BINANCE_URL = "https://api.binance.us/api/v3/ticker/24hr"
 COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets"
 BTC_DOMINANCE_URL = "https://api.coingecko.com/api/v3/global"
 FUTURES_URL = "https://fapi.binance.com/fapi/v1/openInterest"
