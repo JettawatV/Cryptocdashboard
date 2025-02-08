@@ -223,11 +223,13 @@ st.subheader(f"Today's Insights")
 if binance_data:
     # Generate the insight text based on the selected crypto data
     insight_text = f"""
-        {selected_crypto} is currently trading at ${ticker['price']:,.2f}. Over the last 24 hours, it has reached a high of ${float(binance_data['highPrice']):,.2f} and a low of ${float(binance_data['lowPrice']):,.2f}. Trading volume for the past 24 hours was ${float(binance_data['quoteVolume']):,.2f} USD, with a market cap dominance of {float(dominance):,.2f}% of the total market. The 24H price change stands at {ticker['change']}%.
-        """
+        {selected_crypto} is currently trading at ${ticker['price']:,.2f}. 
+        Over the last 24 hours, it has reached a high of ${float(binance_data['highPrice']):,.2f} and a low of ${float(binance_data['lowPrice']):,.2f}. 
+        Trading volume for the past 24 hours was ${float(binance_data['quoteVolume']):,.2f} USD, with a market cap dominance of {float(dominance):,.2f}% of the total market. 
+        The 24H price change stands at {ticker['change']}%."""
 
     # Display the generated insights text
-    st.markdown(insight_text)
+    st.markdown(f"<p style='font-size:16px;'>{insight_text}</p>", unsafe_allow_html=True)
 
 # Display historical data
 if df is not None and not df.empty:
