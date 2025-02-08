@@ -111,7 +111,7 @@ def get_open_interest(symbol):
         st.error(f"Error fetching open interest data: {e}")
         return None
 # Function to get Coin dominance
-def get_crypto_dominance(selected_crypto_name):
+def get_crypto_dominance(symbol):
     """
     Fetch the dominance of the selected cryptocurrency
     from the CoinGecko API using the global market data.
@@ -130,7 +130,7 @@ def get_crypto_dominance(selected_crypto_name):
             market_cap_percentages = data['market_cap_percentage']
             
             # Map selected crypto name to the CoinGecko format for dominance
-            selected_crypto_symbol = crypto_options.get(selected_crypto_name, None)
+            selected_crypto_symbol = crypto_options.get(symbol, None)
             
             if selected_crypto_symbol:
                 # Get the dominance percentage of the selected crypto
