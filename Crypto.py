@@ -13,6 +13,9 @@ st.set_page_config(
 
 # Binance API Base URL
 BINANCE_BASE_URL = "https://api.binance.us"
+COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets"
+BTC_DOMINANCE_URL = "https://api.coingecko.com/api/v3/global"
+FUTURES_URL = "https://fapi.binance.com/fapi/v1/openInterest"
 
 # Function to get Binance market data
 def get_binance_data(symbol, interval, limit=100):
@@ -82,9 +85,31 @@ def get_blockchain_info():
     except Exception as e:
         st.error(f"Error fetching blockchain data: {e}")
         return None
+# Function to get market data from CoinGecko
+def get_market_data(crypto_id):
+    params = {"vs_currency": "usd", "ids": crypto_id}
+    response = requests.get(COINGECKO_URL, params=params)
+    if response.status_code == 200:
+        return response.json()[0]
+    return None
+
+# Function to get BTC dominance
+def get_btc_dominance():
+    response = requests.get(BTC_DOMINANCE_URL)
+    if response.status_code == 200:
+        return response.json()['data']['market_cap_percentage']['btc']
+    return None
+
+# Function to get open interest
+def get_open_interest(symbol):
+    params = {"symbol": symbol.upper()}
+    response = requests.get(FUTURES_URL, params=params)
+    if response.status_code == 200:
+        return float(response.json()['openInterest'])
+    return None
 
 # Sidebar settings
-st.sidebar.title("Settings")
+st.sidebar.title("Slicers")
 
 # Cryptocurrency selection (Binance pairs)
 crypto_options = {
@@ -120,9 +145,34 @@ df = get_binance_data(crypto_symbol, interval)
 ticker = get_binance_ticker(crypto_symbol)
 
 # Dashboard Title
-st.title("Crypto Analysis Dashboard")
+st.title("Crypto Real Time Analysis Dashboard")
 st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
+# Fetch Binance data
+binance_data = get_binance_data(crypto_symbol)
+market_data = get_market_data(selected_crypto.lower())
+btc_dominance = get_btc_dominance()
+open_interest = get_open_interest(crypto_symbol)
+
+# Display Metrics
+st.subheader(f"📊 {selected_crypto} Market Metrics")
+col1, col2, col3, col4 = st.columns(4)
+
+if binance_data:
+    col1.metric("24H High", f"${float(binance_data['highPrice']):,.2f}")
+    col2.metric("24H Low", f"${float(binance_data['lowPrice']):,.2f}")
+    col3.metric("24H Volume (BTC)", f"{float(binance_data['volume']):,.2f} BTC")
+    col4.metric("24H Volume (USD)", f"${float(binance_data['quoteVolume']):,.2f}")
+
+if market_data:
+    st.metric("🔝 All-Time High (ATH)", f"${market_data['ath']:,.2f}")
+    st.metric("💰 Market Cap", f"${market_data['market_cap']:,.2f}")
+
+if btc_dominance:
+    st.metric("⚡ BTC Dominance", f"{btc_dominance:.2f}%")
+
+if open_interest:
+    st.metric("📉 Open Interest", f"{open_interest:,.2f} BTC")
 # Display real-time market data
 if ticker:
     col1, col2, col3 = st.columns(3)
