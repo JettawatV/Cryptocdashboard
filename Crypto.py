@@ -231,10 +231,8 @@ if market_data:
     with col2:
         st.metric("Market Cap", f"${market_data['market_cap']:,.2f}")
         
-if dominance is not None:
-    st.metric(f"{selected_crypto_name} Dominance: {dominance}%)
-else:
-    st.error(f"Failed to fetch dominance for {selected_crypto}")
+if dominance:
+    st.metric(f"{selected_crypto_name} Dominance": {dominance}%)
 
 if open_interest:
     st.metric("Open Interest", f"{open_interest:,.2f} BTC")
