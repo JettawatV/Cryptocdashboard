@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # Binance API Base URL
-BINANCE_BASE_URL = "https://api.binance.com"
+BINANCE_BASE_URL = "https://api.binance.us"
 
 # Function to get Binance market data
 def get_binance_data(symbol, interval, limit=100):
