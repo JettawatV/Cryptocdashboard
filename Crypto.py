@@ -190,6 +190,8 @@ crypto_symbol_name = selected_crypto
 df = get_binance_data(crypto_symbol, interval)
 ticker = get_binance_ticker(crypto_symbol)
 binance_data = get_binance_data2(crypto_symbol)
+dominance = get_crypto_dominance(crypto_symbol_name)
+open_interest = get_open_interest(crypto_symbol)
 # Dashboard Title
 st.title("Crypto Real Time Analysis Dashboard")
 st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -204,9 +206,6 @@ if binance_data:
 
     # Display the generated insights text
     st.markdown(insight_text)
-# Fetch Binance data
-dominance = get_crypto_dominance(crypto_symbol_name)
-open_interest = get_open_interest(crypto_symbol)
 
 # Display Metrics
 st.subheader(f"{selected_crypto} Market Metrics")
