@@ -189,14 +189,24 @@ if binance_data:
     col4.metric("24H Volume (USD)", f"${float(binance_data['quoteVolume']):,.2f}")
 
 if market_data:
-    st.metric("All-Time High (ATH)", f"${market_data['ath']:,.2f}")
-    st.metric("Market Cap", f"${market_data['market_cap']:,.2f}")
+    st.subheader(f"📊 {selected_crypto} All-Time High and Market Cap")
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.metric("All-Time High (ATH)", f"${market_data['ath']:,.2f}")
+    
+    with col2:
+        st.metric("Market Cap", f"${market_data['market_cap']:,.2f}")
+
+else:
+    st.error("Error fetching ATH and Market Cap from CoinMarketCap.")
 
 if btc_dominance:
     st.metric("BTC Dominance", f"{btc_dominance:.2f}%")
 
 if open_interest:
     st.metric("Open Interest", f"{open_interest:,.2f} BTC")
+
 # Display real-time market data
 if ticker:
     col1, col2, col3 = st.columns(3)
