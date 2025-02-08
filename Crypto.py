@@ -68,7 +68,19 @@ def get_binance_ticker(symbol):
     except Exception as e:
         st.error(f"Error fetching Binance ticker: {e}")
         return None
-
+        
+def get_market_data(crypto_id):
+    params = {"vs_currency": "usd", "ids": crypto_id}
+    try:
+        response = requests.get(COINGECKO_URL, params=params)
+        if response.status_code == 200:
+            return response.json()[0]
+        else:
+            st.error("Error fetching CoinGecko market data")
+            return None
+    except Exception as e:
+        st.error(f"Error fetching CoinGecko data: {e}")
+        return None
 # Function to get Bitcoin blockchain stats
 def get_blockchain_info():
     """Fetch Bitcoin network statistics from Blockchain.info API"""
@@ -161,7 +173,7 @@ st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 # Fetch Binance data
 binance_data = get_binance_data2(crypto_symbol)
-market_data = get_market_data(selected_crypto.upper())
+market_data = get_market_data(selected_crypto.lower())
 btc_dominance = get_btc_dominance()
 open_interest = get_open_interest(crypto_symbol)
 
