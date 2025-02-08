@@ -17,6 +17,8 @@ BINANCE_URL = "https://api.binance.us/api/v3/ticker/24hr"
 COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets"
 BTC_DOMINANCE_URL = "https://api.coingecko.com/api/v3/global"
 FUTURES_URL = "https://fapi.binance.com/fapi/v1/openInterest"
+COINMARKETCAP_API_KEY = '356c49a6-c0e2-4ebc-8726-2767c3df46bf'
+COINMARKETCAP_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 
 # Function to get Binance market data
 def get_binance_data(symbol, interval, limit=100):
@@ -68,38 +70,14 @@ def get_binance_ticker(symbol):
     except Exception as e:
         st.error(f"Error fetching Binance ticker: {e}")
         return None
-        
 # Function to get market data from CoinGecko
-# Function to get market data from CoinGecko
-def get_market_data(crypto_id):
-    params = {"vs_currency": "usd", "ids": crypto_id}
-    try:
-        response = requests.get(COINGECKO_URL, params=params)
-        
-        # Check if the response is successful (HTTP status 200)
-        if response.status_code == 200:
-            data = response.json()
-            
-            # Log the response to understand its structure
-            st.write("CoinGecko API Response:", data)
-            
-            # Ensure the response contains the expected data
-            if isinstance(data, list) and len(data) > 0:
-                return data[0]
-            else:
-                st.error("Unexpected response format: Response is not a list or is empty")
-                return None
-        else:
-            st.error(f"Error fetching CoinGecko market data: {response.status_code}")
-            return None
-    except requests.exceptions.RequestException as e:
-        # Handle request errors (e.g., network issues)
-        st.error(f"Request error while fetching CoinGecko data: {e}")
-        return None
-    except Exception as e:
-        # Handle unexpected errors
-        st.error(f"An error occurred: {e}")
-        return None
+def get_market_data_from_coinmarketcap(crypto_id):
+    headers = {'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY, 'Accept': 'application/json'}
+    params = {"symbol": crypto_id, "convert": "USD"}
+    response = requests.get(COINMARKETCAP_URL, headers=headers, params=params)
+    if response.status_code == 200:
+        return response.json()['data'][0]
+    return None
         
 # Function to get Bitcoin blockchain stats
 def get_blockchain_info():
@@ -193,7 +171,7 @@ st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 # Fetch Binance data
 binance_data = get_binance_data2(crypto_symbol)
-market_data = get_market_data(selected_crypto.lower())
+market_data = get_market_data_from_coinmarketcap(selected_crypto.lower())
 btc_dominance = get_btc_dominance()
 open_interest = get_open_interest(crypto_symbol)
 
