@@ -232,7 +232,7 @@ if market_data:
         st.metric("Market Cap", f"${market_data['market_cap']:,.2f}")
         
 if dominance:
-    st.metric(f"{selected_crypto} Dominance", f"{dominance:.2f}%")
+    st.metric(f"{selected_crypto} Dominance", f"{dominance:,.2f}%")
 
 if open_interest:
     st.metric("Open Interest", f"{open_interest:,.2f} BTC")
