@@ -193,7 +193,17 @@ ticker = get_binance_ticker(crypto_symbol)
 # Dashboard Title
 st.title("Crypto Real Time Analysis Dashboard")
 st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+# Display Dynamic Insight Text
+if binance_data:
+    # Generate the insight text based on the selected crypto data
+    insight_text = f"""
+    {selected_crypto} is currently trading at ${current_price:,.2f}. Over the last 24 hours, it has reached a high of ${float(binance_data['highPrice']):,.2f} and a low of ${float(binance_data['lowPrice']):,.2f}.
+    
+    Trading volume for the past 24 hours was ${float(binance_data['quoteVolume']):,.2f} USD, with a market cap dominance of {dominance_value:,.2f}% of the total market. The 24H price change stands at {change_24h}%.
+    """
 
+    # Display the generated insights text
+    st.markdown(insight_text)
 # Fetch Binance data
 binance_data = get_binance_data2(crypto_symbol)
 dominance = get_crypto_dominance(crypto_symbol_name)
