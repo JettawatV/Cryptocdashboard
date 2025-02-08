@@ -108,6 +108,13 @@ def get_open_interest(symbol):
         return float(response.json()['openInterest'])
     return None
 
+def get_binance_data2(symbol):
+    params = {"symbol": symbol.upper()}
+    response = requests.get(BINANCE_URL, params=params)
+    if response.status_code == 200:
+        return response.json()
+    return None
+
 # Sidebar settings
 st.sidebar.title("Slicers")
 
@@ -149,7 +156,7 @@ st.title("Crypto Real Time Analysis Dashboard")
 st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 # Fetch Binance data
-binance_data = get_binance_data(crypto_symbol)
+binance_data = get_binance_data2(crypto_symbol)
 market_data = get_market_data(selected_crypto.lower())
 btc_dominance = get_btc_dominance()
 open_interest = get_open_interest(crypto_symbol)
