@@ -18,7 +18,7 @@ COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets"
 BTC_DOMINANCE_URL = "https://api.coingecko.com/api/v3/global"
 FUTURES_URL = "https://fapi.binance.com/fapi/v1/openInterest"
 COINMARKETCAP_API_KEY = '356c49a6-c0e2-4ebc-8726-2767c3df46bf'
-COINMARKETCAP_URL = "https://api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+COINMARKETCAP_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 
 # Function to get Binance market data
 def get_binance_data(symbol, interval, limit=100):
@@ -110,12 +110,45 @@ def get_open_interest(symbol):
     except Exception as e:
         st.error(f"Error fetching open interest data: {e}")
         return None
-# Function to get BTC dominance
-def get_btc_dominance():
-    response = requests.get(BTC_DOMINANCE_URL)
-    if response.status_code == 200:
-        return response.json()['data']['market_cap_percentage']['btc']
-    return None
+# Function to get Coin dominance
+def get_crypto_dominance(selected_crypto_name):
+    """
+    Fetch the dominance of the selected cryptocurrency
+    from the CoinGecko API using the global market data.
+    """
+    try:
+        # CoinGecko API request to get global market data (including market caps)
+        response = requests.get(BTC_DOMINANCE_URL)
+        
+        if response.status_code == 200:
+            data = response.json()['data']
+            
+            # Get the total market cap for all cryptocurrencies
+            total_market_cap = data['total_market_cap_usd']
+            
+            # Fetch the market cap percentage of the selected coin from the global market data
+            market_cap_percentages = data['market_cap_percentage']
+            
+            # Map selected crypto name to the CoinGecko format for dominance
+            selected_crypto_symbol = crypto_options.get(selected_crypto_name, None)
+            
+            if selected_crypto_symbol:
+                # Get the dominance percentage of the selected crypto
+                dominance = market_cap_percentages.get(selected_crypto_symbol.split("USDT")[0].lower(), None)
+                
+                if dominance is not None:
+                    return f"{selected_crypto_name} Dominance: {dominance}%"
+                else:
+                    return f"Dominance data for {selected_crypto_name} is not available."
+            else:
+                return "Selected crypto is not available in the options."
+
+        else:
+            return "Error fetching market data from CoinGecko."
+
+    except Exception as e:
+        return f"Error: {e}"
+
 
 # Function to get open interest
 def get_open_interest(symbol):
@@ -175,7 +208,7 @@ st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 # Fetch Binance data
 binance_data = get_binance_data2(crypto_symbol)
 market_data = get_ath_and_marketcap_from_coinmarketcap(selected_crypto)
-btc_dominance = get_btc_dominance()
+dominance = get_crypto_dominance(selected_crypto)
 open_interest = get_open_interest(crypto_symbol)
 
 # Display Metrics
@@ -189,7 +222,7 @@ if binance_data:
     col4.metric("24H Volume (USD)", f"${float(binance_data['quoteVolume']):,.2f}")
 
 if market_data:
-    st.subheader(f"📊 {selected_crypto} All-Time High and Market Cap")
+    st.subheader(f"{selected_crypto} All-Time High and Market Cap")
     col1, col2 = st.columns(2)
 
     with col1:
@@ -202,7 +235,7 @@ else:
     st.error("Error fetching ATH and Market Cap from CoinMarketCap.")
 
 if btc_dominance:
-    st.metric("BTC Dominance", f"{btc_dominance:.2f}%")
+    st.metric(f"{selected_crypto} Dominance", f"{btc_dominance:.2f}%")
 
 if open_interest:
     st.metric("Open Interest", f"{open_interest:,.2f} BTC")
