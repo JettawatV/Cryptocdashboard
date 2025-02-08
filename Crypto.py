@@ -171,7 +171,7 @@ st.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 # Fetch Binance data
 binance_data = get_binance_data2(crypto_symbol)
-market_data = get_market_data_from_coinmarketcap(selected_crypto.lower())
+market_data = get_market_data_from_coinmarketcap(selected_crypto)
 btc_dominance = get_btc_dominance()
 open_interest = get_open_interest(crypto_symbol)
 
