@@ -234,7 +234,7 @@ if market_data:
 else:
     st.error("Error fetching ATH and Market Cap from CoinMarketCap.")
 
-if btc_dominance:
+if dominance:
     st.metric(f"{selected_crypto} Dominance", f"{btc_dominance:.2f}%")
 
 if open_interest:
