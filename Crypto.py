@@ -70,6 +70,7 @@ def get_binance_ticker(symbol):
         return None
         
 # Function to get market data from CoinGecko
+# Function to get market data from CoinGecko
 def get_market_data(crypto_id):
     params = {"vs_currency": "usd", "ids": crypto_id}
     try:
@@ -78,11 +79,15 @@ def get_market_data(crypto_id):
         # Check if the response is successful (HTTP status 200)
         if response.status_code == 200:
             data = response.json()
+            
+            # Log the response to understand its structure
+            st.write("CoinGecko API Response:", data)
+            
             # Ensure the response contains the expected data
             if isinstance(data, list) and len(data) > 0:
                 return data[0]
             else:
-                st.error("Unexpected response format from CoinGecko API")
+                st.error("Unexpected response format: Response is not a list or is empty")
                 return None
         else:
             st.error(f"Error fetching CoinGecko market data: {response.status_code}")
@@ -95,6 +100,7 @@ def get_market_data(crypto_id):
         # Handle unexpected errors
         st.error(f"An error occurred: {e}")
         return None
+        
 # Function to get Bitcoin blockchain stats
 def get_blockchain_info():
     """Fetch Bitcoin network statistics from Blockchain.info API"""
