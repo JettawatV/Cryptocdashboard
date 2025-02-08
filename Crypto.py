@@ -232,6 +232,7 @@ if market_data:
         st.metric("Market Cap", f"${market_data['market_cap']:,.2f}")
         
 if dominance:
+    dominance = float(dominance)  # Convert to float if it's not already
     st.metric(f"{selected_crypto} Dominance", f"{dominance:,.2f}%")
 
 if open_interest:
