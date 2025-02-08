@@ -69,17 +69,31 @@ def get_binance_ticker(symbol):
         st.error(f"Error fetching Binance ticker: {e}")
         return None
         
+# Function to get market data from CoinGecko
 def get_market_data(crypto_id):
     params = {"vs_currency": "usd", "ids": crypto_id}
     try:
         response = requests.get(COINGECKO_URL, params=params)
+        
+        # Check if the response is successful (HTTP status 200)
         if response.status_code == 200:
-            return response.json()[0]
+            data = response.json()
+            # Ensure the response contains the expected data
+            if isinstance(data, list) and len(data) > 0:
+                return data[0]
+            else:
+                st.error("Unexpected response format from CoinGecko API")
+                return None
         else:
-            st.error("Error fetching CoinGecko market data")
+            st.error(f"Error fetching CoinGecko market data: {response.status_code}")
             return None
+    except requests.exceptions.RequestException as e:
+        # Handle request errors (e.g., network issues)
+        st.error(f"Request error while fetching CoinGecko data: {e}")
+        return None
     except Exception as e:
-        st.error(f"Error fetching CoinGecko data: {e}")
+        # Handle unexpected errors
+        st.error(f"An error occurred: {e}")
         return None
 # Function to get Bitcoin blockchain stats
 def get_blockchain_info():
