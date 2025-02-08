@@ -86,14 +86,17 @@ def get_blockchain_info():
     except Exception as e:
         st.error(f"Error fetching blockchain data: {e}")
         return None
-# Function to get market data from CoinGecko
-def get_market_data(crypto_id):
-    params = {"vs_currency": "usd", "ids": crypto_id}
-    response = requests.get(COINGECKO_URL, params=params)
-    if response.status_code == 200:
-        return response.json()[0]
-    return None
-
+# Function to get open interest
+def get_open_interest(symbol):
+    params = {"symbol": symbol.upper()}
+    try:
+        response = requests.get(FUTURES_URL, params=params)
+        if response.status_code == 200:
+            return float(response.json()['openInterest'])
+        return None
+    except Exception as e:
+        st.error(f"Error fetching open interest data: {e}")
+        return None
 # Function to get BTC dominance
 def get_btc_dominance():
     response = requests.get(BTC_DOMINANCE_URL)
