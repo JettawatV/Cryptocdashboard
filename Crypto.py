@@ -218,7 +218,12 @@ selected_timeframe = st.sidebar.selectbox("Select Timeframe", list(timeframe_opt
 # Start WebSocket connection for real-time updates
 if 'websocket_started' not in st.session_state:
     st.session_state.websocket_started = False
-
+    
+if selected_pair:
+    binance.start_websocket(selected_pair.lower())
+else:
+    st.error("No trading pair selected")
+    
 if not st.session_state.websocket_started:
     binance.start_websocket(selected_pair.lower())
     st.session_state.websocket_started = True
