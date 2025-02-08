@@ -69,18 +69,7 @@ def get_binance_ticker(symbol):
     except Exception as e:
         st.error(f"Error fetching Binance ticker: {e}")
         return None
-# Function to get market data from CoinGecko
-def get_ath_and_marketcap_from_coinmarketcap(crypto_id):
-    headers = {'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY, 'Accept': 'application/json'}
-    params = {"symbol": crypto_id, "convert": "USD"}
-    response = requests.get(COINMARKETCAP_URL, headers=headers, params=params)
-    if response.status_code == 200:
-        data = response.json()['data'][0]  # Grab the first cryptocurrency data
-        return {
-            "ath": data["quote"]["USD"]["all_time_high"],  # All-Time High (ATH)
-            "market_cap": data["quote"]["USD"]["market_cap"]  # Market Cap
-        }
-    return None
+
 # Function to get Bitcoin blockchain stats
 def get_blockchain_info():
     """Fetch Bitcoin network statistics from Blockchain.info API"""
