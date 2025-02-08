@@ -137,7 +137,7 @@ def get_crypto_dominance(selected_crypto_name):
                 dominance = market_cap_percentages.get(selected_crypto_symbol.split("USDT")[0].lower(), None)
                 
                 if dominance is not None:
-                    return f"{selected_crypto_name} Dominance: {dominance}%"
+                    return dominance
                 else:
                     return f"Dominance data for {selected_crypto_name} is not available."
             else:
