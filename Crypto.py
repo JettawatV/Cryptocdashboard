@@ -168,6 +168,8 @@ selected_crypto = st.sidebar.selectbox(
     "Select Cryptocurrency", list(crypto_options.keys())
 )
 
+crypto_symbol_name = selected_crypto
+
 # Timeframe selection (Binance intervals)
 timeframe_options = {
     "1 Min": "1m",
@@ -185,7 +187,6 @@ selected_timeframe = st.sidebar.selectbox(
 # Load Binance data
 crypto_symbol = crypto_options[selected_crypto]
 interval = timeframe_options[selected_timeframe]
-crypto_symbol_name = selected_crypto
 
 df = get_binance_data(crypto_symbol, interval)
 ticker = get_binance_ticker(crypto_symbol)
@@ -226,6 +227,7 @@ if binance_data:
 
     # Display the generated insights text
     st.markdown(insight_text)
+
 # Display historical data
 if df is not None and not df.empty:
     st.subheader(f"{selected_crypto} - {selected_timeframe} Chart")
